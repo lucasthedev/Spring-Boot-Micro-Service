@@ -46,6 +46,21 @@ public class ProdutoController {
 
 		return ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("buscarpornome")
+	public ResponseEntity<Produto> buscarPorNome(String nome) {
+		if (nome == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			Optional<Produto> produto = this.produtoReposiory.findByNome(nome);
+
+			if (produto.isPresent()) {
+				return ResponseEntity.ok(produto.get());
+			}
+
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 	@PostMapping("/cadastrar")
 	@ResponseBody
