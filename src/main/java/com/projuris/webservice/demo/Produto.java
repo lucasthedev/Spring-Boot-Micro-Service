@@ -12,6 +12,8 @@ public class Produto {
 	private long id;
 	private String nome;
 	
+	public Produto() {}
+	
 	public Produto(long id, String nome) {
 		super();
 		this.id = id;
