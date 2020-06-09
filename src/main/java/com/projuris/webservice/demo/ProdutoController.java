@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,19 @@ public class ProdutoController {
 		if (produtosExistentes.isPresent()) {
 			this.produtoReposiory.save(produto);
 			return ResponseEntity.ok(produto);
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	@DeleteMapping("exlcuir/{id}")
+	public ResponseEntity<Produto> excluirProduto(@PathVariable Long id) {
+
+		Optional<Produto> produto = this.produtoReposiory.findById(id);
+
+		if (produto.isPresent()) {
+			this.produtoReposiory.deleteById(id);
+			return ResponseEntity.ok(produto.get());
 		}
 
 		return ResponseEntity.notFound().build();
