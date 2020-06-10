@@ -1,5 +1,6 @@
 package com.projuris.webservice.demo;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @CrossOrigin
@@ -26,8 +26,7 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoRepository produtoReposiory;
 
-	@RequestMapping("/listar")
-	@ResponseBody
+	@GetMapping("/listar")	
 	public List<Produto> listarProdutos() {
 
 		List<Produto> produtos = produtoReposiory.findAll();
@@ -62,11 +61,16 @@ public class ProdutoController {
 		}
 	}
 
-	@PostMapping("/cadastrar")
-	@ResponseBody
-	public Produto cadastrarProduto(@Validated @RequestBody Produto produto) {
+	@PostMapping("/cadastrar")	
+	public ResponseEntity<Produto> cadastrarProduto(@Validated @RequestBody Produto produto, UriComponentsBuilder uriBuilder) {
 
-		return this.produtoReposiory.save(produto);
+		Produto novoProduto = this.produtoReposiory.save(produto);
+		if(novoProduto != null) {
+			URI uri = uriBuilder.path("/cadastrar/{id}").buildAndExpand(novoProduto.getId()).toUri();
+			return ResponseEntity.created(uri).body(novoProduto);
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 
 	@PutMapping("/alterar")
