@@ -93,6 +93,14 @@ public class Usuario implements UserDetails {
 		return this.perfis;
 	}
 
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
+	}
+
 	@Override
 	public String getUsername() {
 		return this.email;
