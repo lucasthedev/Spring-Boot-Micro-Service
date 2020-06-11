@@ -78,6 +78,7 @@ public class ProdutoController {
 	}
 
 	@PutMapping("/alterar")
+	@CacheEvict(value = "listaProdutos", allEntries = true)
 	public ResponseEntity<Produto> alterarProduto(@Validated @RequestBody Produto produto) {
 
 		Optional<Produto> produtosExistentes = this.produtoReposiory.findById(produto.getId());
@@ -91,6 +92,7 @@ public class ProdutoController {
 	}
 
 	@DeleteMapping("exlcuir/{id}")
+	@CacheEvict(value = "listaProdutos", allEntries = true)
 	public ResponseEntity<Produto> excluirProduto(@PathVariable Long id) {
 
 		Optional<Produto> produto = this.produtoReposiory.findById(id);
