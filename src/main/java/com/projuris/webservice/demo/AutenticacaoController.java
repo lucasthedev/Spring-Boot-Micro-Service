@@ -21,17 +21,17 @@ public class AutenticacaoController {
 
 	@Autowired
 	private TokenService tokenService;
-	
+
 	@PostMapping
 	public ResponseEntity<?> autenticar(@RequestBody @Validated LoginForm login) {
 		UsernamePasswordAuthenticationToken dadosLogin = login.converter();
 
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);
-			
+
 			String token = tokenService.gerarToken(authentication);
-			System.out.println(token);
-			return ResponseEntity.ok().build();
+
+			return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
 		} catch (AuthenticationException e) {
 			return ResponseEntity.badRequest().build();
 		}
